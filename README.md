@@ -1,2 +1,2 @@
-# hangman
+# Hangman
 2-player game of hangman implemented in Java
