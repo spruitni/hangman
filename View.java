@@ -119,7 +119,7 @@ public class View extends JFrame{
         this.pack();
         this.setSize(900, 850);
         this.getContentPane();   
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.setVisible(true);
     }
 
@@ -145,28 +145,28 @@ public class View extends JFrame{
     public void displayError(String errorMessage){
         JLabel error = new JLabel(errorMessage);
         error.setFont(font);
-        JOptionPane.showMessageDialog(null, error, "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, error, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     public void displayGuesserWin(String word){
         JLabel message = new JLabel("Congratulations, you guessed: " + word);
         message.setFont(font);
-        JOptionPane.showMessageDialog(null, message, "You Win!", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(this, message, "You Win!", JOptionPane.PLAIN_MESSAGE);
     }
     public void displayGuesserLose(String word){
         JLabel message = new JLabel("Sorry, you lost. Correct word: " + word);
         message.setFont(font);
-        JOptionPane.showMessageDialog(null, message, "You Lose!", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(this, message, "You Lose!", JOptionPane.PLAIN_MESSAGE);
     }
     public void displayHostWin(String word){
         JLabel message = new JLabel("Congratulations, your opponent could not guess: " + word);
         message.setFont(font);
-        JOptionPane.showMessageDialog(null, message, "You Win!", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(this, message, "You Win!", JOptionPane.PLAIN_MESSAGE);
     }
     public void displayHostLose(String word){
         JLabel message = new JLabel("Sorry, you lost. Your opponent guessed: " + word);
         message.setFont(font);
-        JOptionPane.showMessageDialog(null, message, "You Lose!", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(this, message, "You Lose!", JOptionPane.PLAIN_MESSAGE);
     }
 
     public void setScore(int score){
@@ -252,5 +252,10 @@ public class View extends JFrame{
     public void resetScores(){
         player1Score.setText("Score: 0");
         player2Score.setText("Score: 0");
+    }
+    public void quitMessage(int score, int opponentScore){
+        JLabel message = new JLabel("Game is quitting. Final score: You: " + score + ", Opponent: " + opponentScore);
+        message.setFont(font);
+        JOptionPane.showMessageDialog(this, message, "Goodbye", JOptionPane.PLAIN_MESSAGE);
     }
 }

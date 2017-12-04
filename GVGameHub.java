@@ -12,17 +12,15 @@ public class GVGameHub{
         System.out.println("2-player games available: Chess | Hangman");
         System.out.println("*****************************************");
         do{
-            String message = getUserInput("Would you like to play Chess(c) or Hangman(h)? ");
+            String message = getUserInput("Would you like to play Chess(c) or Hangman(h) or Quit(q)? ");
             if(message.equals("CHESS") || message.equals("C")){
                 System.out.println("Sorry, currently unavailable");
                 //setUp("CHESS");
-                //cont = false;
             }
             else if(message.equals("HANGMAN") || message.equals("H")){
                 setUp("HANGMAN");
-                cont = false;
             }
-            else if(message.equals("quit")){
+            else if(message.equals("QUIT") || message.equals("Q")){
                 System.out.println("Goodbye...");
                 cont = false;
             }
@@ -53,25 +51,35 @@ public class GVGameHub{
         do{
             String hostOrClient = getUserInput("Would you like to be a server(s) or client(c)? ");
             if(hostOrClient.equals("SERVER") || hostOrClient.equals("S")){
-                int port = Integer.parseInt(getUserInput("Enter your port number: "));
-                if(game.equals("CHESS")){
-                    //TODO
+                try{
+                    int port = Integer.parseInt(getUserInput("Enter your listening port number: "));
+                    if(game.equals("CHESS")){
+                        //TODO
+                        cont = false;
+                    }
+                    else if(game.equals("HANGMAN")){
+                        new HostController(port);
+                    }
                 }
-                else if(game.equals("HANGMAN")){
-                    new HostController(port);
+                catch(NumberFormatException ex){
+                    System.out.println("Invalid port");
                 }
-                cont = false;
             }
             else if(hostOrClient.equals("CLIENT") || hostOrClient.equals("C")){
-                int port = Integer.parseInt(getUserInput("Enter host port number: "));
-                String ipAddress = getUserInput("Enter host IP address: ");
-                if(game.equals("CHESS")){
-                    //TODO
+                try{
+                    String ipAddress = getUserInput("Enter host IP address: ");
+                    int port = Integer.parseInt(getUserInput("Enter host port number: "));
+                    if(game.equals("CHESS")){
+                        //TODO
+                    }
+                    else if(game.equals("HANGMAN")){
+                        new ConnectController(ipAddress, port);
+                    }
+                    cont = false;            
                 }
-                else if(game.equals("HANGMAN")){
-                    new ConnectController(ipAddress, port);
+                catch(NumberFormatException ex){
+                    System.out.println("Invalid host port");
                 }
-                cont = false;            
             }
         }while(cont);
     }

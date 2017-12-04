@@ -3,6 +3,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowListener;
 import javax.swing.JButton;
 import java.awt.event.WindowEvent;
+import javax.swing.*;
+import java.awt.Font;
 import java.io.*; 
 import java.net.*;
 import java.util.*;
@@ -44,7 +46,6 @@ public abstract class Controller{
         view.setWordLabel("");
         view.setToWait();
     }
-
 
     public void listen(BufferedReader br, DataOutputStream dos){
         boolean cont = true;
@@ -93,6 +94,7 @@ public abstract class Controller{
                     updateGUI();
                 }
                 else if(messageParts[0].equals("quit")){
+                    view.quitMessage(score, opponentScore);
                     view.dispose();
                     dos.writeBytes("quitListening");
                     cont = false;
@@ -149,8 +151,8 @@ public abstract class Controller{
                     }
                 }
                 if(e.getSource() == view.getGuessWordButton()){
-                    view.clearGuessWord();
                     String word = view.getGuessWord();
+                    view.clearGuessWord();
                     try{
                         if(model.guessWord(word)){
                             score++;
@@ -170,9 +172,9 @@ public abstract class Controller{
                     }
                 }
                 else if(e.getSource() == view.getSetWordButton()){
-                    view.clearSetWord();
                     try{
                         String word = view.getSetWord();
+                        view.clearSetWord();
                         if(model.validWord(word)){
                             model.newGame(word, Difficulty.EASY);
                             dos.writeBytes("Set " + word + "\n");
@@ -189,6 +191,7 @@ public abstract class Controller{
                 }
                 else if(e.getSource() == view.getQuitButton()){
                     try{
+                        view.quitMessage(score, opponentScore);
                         dos.writeBytes("quit\n");
                         view.dispose();
                     }
