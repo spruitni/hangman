@@ -21,6 +21,8 @@ public class View extends JFrame{
     private boolean isHost;
     
     public View(boolean isHost){
+
+        //Crete components
         mainPanel = new JPanel(new GridLayout(3, 1));
         topPanel = new JPanel(new GridBagLayout());
         middlePanel = new JPanel(new GridBagLayout());
@@ -38,11 +40,12 @@ public class View extends JFrame{
         quitButton = new JButton("Quit");
         this.isHost = isHost;
 
-        //Set fonts
+        //Set fonts for labels, inputs and buttons
         font = new Font("Monospaced", Font.PLAIN, 20);
         wordLabel.setFont(font);
         guessWordButton.setFont(font);
         setWordButton.setFont(font);
+        quitButton.setFont(font);
         wordInput.setFont(font);
         wordInput2.setFont(font);
         remainingLabel.setFont(font);
@@ -51,7 +54,7 @@ public class View extends JFrame{
         player1Score.setFont(font);
         player2Score.setFont(font);
         
-        //Set player labels
+        //Set player names and scores
         if(this.isHost){
             player1Label.setText("Player 1 (You) ");
             player2Label.setText("Player 2 ");
@@ -63,7 +66,7 @@ public class View extends JFrame{
         this.setScore(0);
         this.setOpponentScore(0);
 
-        //Add letters
+        //Add all letters to the game panel
         letterButtons = new JButton[ALPHA_LENGTH];
         int length = letterButtons.length;
         bottomPanel.add(remainingLabel, getGBC(0, 0, length/2, 1, false, false));
@@ -84,7 +87,7 @@ public class View extends JFrame{
         topPanel.add(player1Score, getGBC(4, 0, 4, 1, true, false));
         topPanel.add(player2Label, getGBC(0, 1 , 4, 1, true, false));
         topPanel.add(player2Score, getGBC(4, 1, 4, 1, true, false));
-        topPanel.add(quitButton, getGBC(0, 2, 8, 1, true, false));
+        topPanel.add(quitButton, getGBC(4, 2, 4, 1, true, false));
         middlePanel.add(wordLabel, getGBC(0, 0, 8, 1, true, false));
         bottomPanel.add(wordInput, getGBC(0, 3, 7, 1, true, false));
         bottomPanel.add(guessWordButton, getGBC(7, 3, 6, 1, true, false));
@@ -207,6 +210,12 @@ public class View extends JFrame{
     public String getSetWord(){
         return wordInput2.getText();
     }
+    public void clearGuessWord(){
+        wordInput.setText("");
+    }
+    public void clearSetWord(){
+        wordInput2.setText("");
+    }
     public void setAsGuesser(){
         for(JButton button : letterButtons){
             button.setEnabled(true);
@@ -236,5 +245,12 @@ public class View extends JFrame{
     }
     public void clearRemaining(){
         remainingLabel.setText("");
+    }
+    public JButton getQuitButton(){
+        return quitButton;
+    }
+    public void resetScores(){
+        player1Score.setText("Score: 0");
+        player2Score.setText("Score: 0");
     }
 }

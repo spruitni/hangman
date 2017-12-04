@@ -10,7 +10,6 @@ import java.text.*;
 import java.lang.*;
 
 public abstract class Controller{
-
     private int score;
     private int opponentScore;
     private boolean isHost;
@@ -25,7 +24,7 @@ public abstract class Controller{
         this.view = new View(isHost);
         this.score = 0;
         this.opponentScore = 0;
-
+        
         //Initially, set the host as the word host, client as the word guesser
         if(isHost){
             view.setAsHost();
@@ -46,7 +45,8 @@ public abstract class Controller{
         view.setToWait();
     }
 
-    public void listen(BufferedReader br){
+
+    public void listen(BufferedReader br, DataOutputStream dos){
         boolean cont = true;
         while(cont){
             try{
@@ -74,7 +74,6 @@ public abstract class Controller{
                         updateGUI();
                     }
                 }
-
                 else if(messageParts[0].equals("Guess")){
                     if(model.guessWord(messageParts[1])){
                         opponentScore++;
@@ -92,6 +91,14 @@ public abstract class Controller{
                     view.setAsGuesser();
                     model.newGame(messageParts[1], Difficulty.EASY);
                     updateGUI();
+                }
+                else if(messageParts[0].equals("quit")){
+                    view.dispose();
+                    dos.writeBytes("quitListening");
+                    cont = false;
+                }
+                else if(messageParts[0].equals("quitListening")){
+                    cont = false;
                 }
             }
             catch(IOException ex){
@@ -142,8 +149,9 @@ public abstract class Controller{
                     }
                 }
                 if(e.getSource() == view.getGuessWordButton()){
+                    view.clearGuessWord();
+                    String word = view.getGuessWord();
                     try{
-                        String word = view.getGuessWord();
                         if(model.guessWord(word)){
                             score++;
                             view.setScore(score);
@@ -158,10 +166,11 @@ public abstract class Controller{
                         dos.writeBytes("Guess " + word + "\n");
                     }
                     catch(IOException ex){
-                        System.out.println("Error writing word");
+                        System.out.println("Error guessing word");
                     }
                 }
                 else if(e.getSource() == view.getSetWordButton()){
+                    view.clearSetWord();
                     try{
                         String word = view.getSetWord();
                         if(model.validWord(word)){
@@ -175,7 +184,16 @@ public abstract class Controller{
                         }
                     }
                     catch(IOException ex){
-                        System.out.println("Error writing word");
+                        System.out.println("Error setting word");
+                    }
+                }
+                else if(e.getSource() == view.getQuitButton()){
+                    try{
+                        dos.writeBytes("quit\n");
+                        view.dispose();
+                    }
+                    catch(IOException ex){
+                        System.out.println("Error quitting");
                     }
                 }
             }
@@ -201,11 +219,9 @@ public abstract class Controller{
         //Add listeners to GUI components
         view.getSetWordButton().addActionListener(actionListener);
         view.getGuessWordButton().addActionListener(actionListener);
+        view.getQuitButton().addActionListener(actionListener);
         for(JButton button : view.getLetterButtons()){
             button.addActionListener(actionListener);
         }
-    }
-    public void setVisible(){
-        view.setVisible(true);
     }
 }
