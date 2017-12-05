@@ -55,11 +55,11 @@ public class GVGameHub{
                     int port = Integer.parseInt(getUserInput("Enter your listening port number: "));
                     if(game.equals("CHESS")){
                         //TODO
-                        cont = false;
                     }
                     else if(game.equals("HANGMAN")){
                         new HostController(port);
                     }
+                    cont = false;
                 }
                 catch(NumberFormatException ex){
                     System.out.println("Invalid port");
